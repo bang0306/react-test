@@ -6,5 +6,14 @@ module.exports = {
     '\\.css$': require.resolve('./test/style-mock')
   },
   // 在执行测试之前运行加载对应的模块，可以用来初始化、polyfill等，这里用它来polyfill localStorage，因为jsdom并未实现
-  setupTestFrameworkScriptFile: require.resolve('./test/setup-test-framework')
+  setupTestFrameworkScriptFile: require.resolve('./test/setup-test-framework'),
+  collectCoverageFrom: ['**/src/**/*.js'],
+  coverageThreshold: {
+    global: {
+      statements: 18, // 相比于当前状况留2个点的裕量
+      branches: 10,
+      functions: 19,
+      lines: 18
+    }
+  }
 }

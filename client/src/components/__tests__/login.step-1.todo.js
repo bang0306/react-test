@@ -2,14 +2,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Login from '../login'
-import { on } from 'cluster';
+import {on} from 'cluster'
 
 test('calls onSubmit with the username and password when submitted', () => {
   // Arrange
   // create a fake object to hold the form field values (username and password)
   const fakeUser = {
     username: 'til',
-    password: 'til'
+    password: 'til',
   }
   // create a jest.fn() for your submit handler
   const onSubmit = jest.fn()
@@ -23,7 +23,7 @@ test('calls onSubmit with the username and password when submitted', () => {
   // TIP: const inputs = div.querySelectorAll('input')
   // TIP: const form = div.querySelector('form')
   // fill in the field values
-  const { username, password } = form.elements
+  const {username, password} = form.elements
   username.value = fakeUser.username
   password.value = fakeUser.password
   //

@@ -36,8 +36,27 @@
 /*
 http://ws.kcd.im/?ws=Testing&e=basic%20react%20test&em=
 */
-test.skip('I submitted my elaboration and feedback', () => {
-  const submitted = false // change this when you've submitted!
-  expect(submitted).toBe(true)
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ItemList from '../item-list'
+
+test ('should render no items when items props is empty', () => {
+  const container = document.createElement('div')
+  ReactDOM.render(<ItemList items={[]} />, container)
+  expect(container.textContent).toMatch('no items')
 })
+
+test ('should render list items when items props is not empty', () => {
+  const container = document.createElement('div')
+  const list = ['Orange', 'Apple', 'Banana']
+  ReactDOM.render(<ItemList items={list} />, container)
+  console.log(container.textContent)
+  expect(container.textContent).toMatch('Orange')
+  expect(container.textContent).toMatch('Apple')
+  expect(container.textContent).toMatch('Banana')
+})
+// test.skip('I submitted my elaboration and feedback', () => {
+//   const submitted = false // change this when you've submitted!
+//   expect(submitted).toBe(true)
+// })
 ////////////////////////////////

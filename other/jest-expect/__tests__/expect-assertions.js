@@ -121,10 +121,20 @@ Snapshot tests below. We'll cover these later
 
 test('manual "snapshot"', () => {
   const flyingHeros = getFlyingSuperHeros()
-  expect(flyingHeros).toEqual([
-    {name: 'Dynaguy', powers: ['disintegration ray', 'fly']},
-    {name: 'Apogee', powers: ['gravity control', 'fly']},
-  ])
+  // snapshot的本质：把数据序列化成一组字符串，然后和将来测试的字符串进行比较
+  // 这里没有序列化，是因为这本来也不是snapshot测试，只是用来表示它的原理
+  // 下面使用jest的api .toMatchSnapshot就可以看出采用的事序列化，然后比较的方式了
+  // 序列化的结果放在__snapshots__文件夹中
+  expect(flyingHeros).toEqual([{
+    "name": "Dynaguy",
+    "powers": ["disintegration ray", "fly"]
+  }, {
+    "name": "Apogee",
+    "powers": ["gravity control", "fly"]
+  }, {
+    "name": "Jack-Jack",
+    "powers": ["shapeshifting", "fly"]
+  }])
 })
 
 test('automatic snapshot', () => {

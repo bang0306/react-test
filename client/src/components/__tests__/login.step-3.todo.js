@@ -1,7 +1,7 @@
 // dealing with react's simulated events
 import React from 'react'
 import {generate} from 'til-client-test-utils'
-import {render, Simulate} from 'react-testing-library'
+import {render, Simulate, renderIntoDocument, cleanup, unmount, fireEvent} from 'react-testing-library'
 import Login from '../login'
 
 // Due to the fact that our element is not in the document, the
@@ -21,12 +21,15 @@ import Login from '../login'
 //
 // Extra bonus, rather than manually inserting the container into the document
 // check out the docs for react-testing-library and the renderIntoDocument method!
+// 相当于在测试末尾 cleanup() document.body.innerHTML = ''
+// 如果使用了renderIntoDocument，建议配套使用afterEach(cleanup)
+afterEach(cleanup)
 
 test('calls onSubmit with the username and password when submitted', () => {
   // Arrange
   const fakeUser = generate.loginForm()
   const handleSubmit = jest.fn()
-  const {container, getByLabelText, getByText} = render(
+  const {container, getByLabelText, getByText, unmount} = renderIntoDocument(
     <Login onSubmit={handleSubmit} />,
   )
 
@@ -38,12 +41,19 @@ test('calls onSubmit with the username and password when submitted', () => {
   // Act
   usernameNode.value = fakeUser.username
   passwordNode.value = fakeUser.password
-  Simulate.submit(formNode)
+  // Simulate.submit(formNode)
+  // submitButtonNode.click()
+  // or
+  // 如果想要触发任意事件
+  fireEvent.click(submitButtonNode)
 
   // Assert
   expect(handleSubmit).toHaveBeenCalledTimes(1)
   expect(handleSubmit).toHaveBeenCalledWith(fakeUser)
   expect(submitButtonNode.type).toBe('submit')
+  // only unmount the component, container is still left
+  // unmount()
+  // document.body.innerHTML = ''
 })
 
 //////// Elaboration & Feedback /////////

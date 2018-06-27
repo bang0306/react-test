@@ -1,7 +1,7 @@
 // add a beforeEach for cleaning up state and intitializing the API
 import React from 'react'
 import axiosMock from 'axios'
-import { renderWithRouter, generate, Simulate } from 'til-client-test-utils'
+import {renderWithRouter, generate, Simulate} from 'til-client-test-utils'
 import {init as initAPI} from '../utils/api'
 import App from '../app'
 
@@ -19,14 +19,14 @@ test('login as an existing user', async () => {
     getByTestId,
     getByText,
     finishLoading,
-    getByLabelText
+    getByLabelText,
   } = renderWithRouter(<App />)
   // wait for the app to finish loading the mocked requests
   //
   await finishLoading()
   // navigate to login by clicking login-link
   //
-  const leftClick = { button: 0 }
+  const leftClick = {button: 0}
   Simulate.click(getByText('Login'), leftClick)
   expect(window.location.href).toContain('login')
   // fill out the form
@@ -43,11 +43,11 @@ test('login as an existing user', async () => {
   // to mock out the post implementation
   // it should return the fake user + a token
   // which you can generate with generate.token(fakeUser)
-  const { post } = axiosMock.__mock.instance
+  const {post} = axiosMock.__mock.instance
   const token = generate.token(fakeUser)
   post.mockImplementationOnce(() => {
     return Promise.resolve({
-      data: {user: {...fakeUser, token}}
+      data: {user: {...fakeUser, token}},
     })
   })
   // Now simulate a submit event on the form
@@ -62,13 +62,12 @@ test('login as an existing user', async () => {
   // assert the username display is the fake user's username
   // assert the logout button exists
   expect(post).toHaveBeenCalledTimes(1)
-  expect(post).toHaveBeenCalledWith(
-    '/auth/login',
-    fakeUser
-  )
+  expect(post).toHaveBeenCalledWith('/auth/login', fakeUser)
   expect(window.localStorage.getItem('token')).toBe(token)
   // expect(window.location.href).not.toContain('login')
-  expect(getByTestId('username-display').textContent).toContain(fakeUser.username)
+  expect(getByTestId('username-display').textContent).toContain(
+    fakeUser.username,
+  )
   expect(getByText('Logout')).toBeTruthy()
 })
 
